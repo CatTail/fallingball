@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<link media="all" rel="stylesheet" href="/static/css/bootstrap.css" type="text/css" />
+	<link media="all" rel="stylesheet" href="/static/css/bootstrap-responsive.css" type="text/css" />
+	<link media="all" rel="stylesheet" href="/static/css/docs.css" type="text/css" />
+	<link media="all" rel="stylesheet" href="/static/css/index.css" type="text/css" />
+	<script src="/static/js/jquery.js" type="text/javascript"></script>
+	<script src="/static/js/index.js" type="text/javascript"></script>
+</head>
+<body>
+<div class="modal" style="position: relative; top: auto; left: auto; margin: 0 auto; z-index: 1">
+	<div class="modal-header">
+		<a href="#" class="close" data-dismiss="modal">×</a>
+		<h3>Welcome</h3>
+	</div>
+	<div class="modal-body">
+		<form class="form-horizontal" method="POST" action="/join">
+			<div class="control-group">
+				<label for="" class="control-label">Enter username：</label>
+				<div class="controls">
+					<input type="TEXT" id="id_username" name="username" />
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<span>Current online : {{ num }}</span>
+		<a id="id_join" href="#" class="btn btn-primary">Start Game</a>
+		<a id="id_restore" href="#" class="btn">Restore</a>
+	</div>
+</div>
+</body>
+</html>

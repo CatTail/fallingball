@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {margin:0; position:absolute; width:100%; height:100%}
+canvas {display: block; margin: 20px auto; border: 2px solid #333}
+img{display: none;}
+</style>
+<script>
+//	function Person(){};
+//	Person.prototype = {
+//		img_src: "person.png",
+//		state: 0,
+//		img_load
+//	}
+	var BounceBall = function () {
+		var ctx, W, H, dx = 2, dy = 4, x = 200, y = 200, ra = 8, X, rd = false; ld = false;
+		var init = function (id) {
+			var canvas = document.getElementById(id);
+			ctx = canvas.getContext('2d');
+			W = canvas.width || 600; //画布总宽
+			H = canvas.height || 400; // 画布总高
+			X = (W-100)/2; //初始挡板x坐标
+			this.run();
+			this.evListen(); //绑定事件
+		}
+		init.prototype = {
+			run: function () {
+				var _this = this;
+				this.st = setInterval(function () {
+				_this.draw();
+				}, 16)
+			},
+			draw: function () {
+				this.clear(); //清除画布，以便重绘
+				this.circle(x, y, ra); //重绘小球
+				this.paddle(X, 25); //重绘挡板
+				// 边界碰撞
+				if (x + dx > W || x + dx < 0) dx = -dx; 
+				if (y + dy < 0) {dy = -dy} 
+				else if (y+dy>H-45 && y+dy<=H && x > X-4 && x < X+this.paddleW+4){
+						this.stop();
+				}
+				else if (y+dy>H){
+					dy=-dy
+				}
+				// 挡板控制
+				if (rd && X < W-this.paddleW) {X += 10} else if (ld && X > 0) {X -= 10}
+					x += dx; // x 方向变化
+					y += dy; // y 方向变化
+			},
+			clear : function () {
+				ctx.clearRect(0, 0, W, H);
+			},
+			circle : function (x, y, r) {
+				ctx.beginPath();
+				ctx.arc(x, y, r, 0, Math.PI*2, true);
+				ctx.closePath();
+				ctx.fill();
+			},
+			rect : function (x, y, w, h) {
+				ctx.beginPath();
+				ctx.rect(x, y, w, h);
+				ctx.closePath();
+				ctx.fill();
+			},
+			// 绘制挡板
+			paddle : function (l, w) {
+				this.paddleW = w;
+				var img = new Image();
+				img.onload = function(){					
+					ctx.drawImage(img, l, H-45);
+					ctx.moveTo(l, H-45);
+					ctx.lineTo(l+25, H-45);
+					ctx.lineTo(l+25, H);
+					ctx.lineTo(l, H);
+					ctx.lineTo(l, H-45);
+					ctx.stroke();
+				}
+				if (rd){
+					img.src = "person_r.png";
+				}
+				else if (ld){
+					img.src = "person_l.png"
+				}
+				else{
+					img.src = "person.png"
+				}
+			},
+			// 键盘事件绑定
+			evListen : function () {
+				document.addEventListener('keydown', function (e) {
+				if (e.keyCode == 39) rd = true;
+				else if (e.keyCode == 37) ld = true;
+				}, false);
+				document.addEventListener('keyup', function (e) {
+				if (e.keyCode == 39) rd = false;
+				else if (e.keyCode == 37) ld = false;
+				}, false);
+			},
+			stop : function () {
+				clearInterval(this.st);
+				alert(this.st+"秒");
+			}
+		}
+		return init;
+	}();
+
+	onload = function () {
+		new BounceBall('canvas')
+	}
+</script></head>
+<body>
+<canvas id="canvas" width="600" height="400">Your Broswer don't support html5 canvas<canvas>
+<img src="person.png" alt="person"/>
+<img src="person_l.png" alt="person"/>
+<img src="person_r.png" alt="person"/>
+</body>
+</html>
